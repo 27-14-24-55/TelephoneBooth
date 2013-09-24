@@ -1,0 +1,141 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title></title>
+<style type="text/css">
+/*<![CDATA[*/
+
+#img {
+  width:100px;height:50px;
+}
+/*]]>*/
+</style></head>
+
+<body>
+<p style="float:right;">It WILL CREATE A SEMAPHORE TELEPHONE</p>
+<p style="float:right;">SEMAPHORE VALUE=1</p>
+<img src="telephone.jpg"/>
+<div id="holder"></div>
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+<input type="button" name="" value="telephone" onmouseup="M1.move('telephone');" />
+<input type="button" onclick="disp_alert()" value="Display alert box" />
+<center><img id="img1" src="man.jpg"  />
+</center>
+
+<script type="text/javascript">
+
+
+function Move(o){
+ var oop=this,img=document.getElementById(o.ImageID),br,tl,ms=o.Duration,c;
+ if (img){
+  c=document.createElement('IMG');
+  c.src=img.src;
+  c.style.position='fixed';
+  c.style.visibility='hidden';
+  br=c.cloneNode(false);
+  br.style.right='100px';
+  br.style.bottom='100px';
+  br.style.width=img.width+'px';
+  br.style.height=img.height+'px';
+  document.body.appendChild(br);
+  oop.telephone=br;
+  tl=c.cloneNode(false);
+  tl.style.left='80px';
+  tl.style.top='250px';
+  tl.style.width=img.width+'px';
+  tl.style.height=img.height+'px';
+  document.body.appendChild(tl);
+  oop.telephone=tl;
+  oop.img=img;
+  c.style.position='absolute';
+  c.style.zIndex='101';
+  c.style.left='-3000px';
+  c.style.top='-3000px';
+  c.style.width=img.width+'px';
+  c.style.height=img.height+'px';
+  oop.c=c;
+  document.body.appendChild(c);
+  oop.ms=ms;
+
+ }
+}
+function disp_alert()
+{
+alert("insert into critical section");
+}
+window.onload = function () {
+
+            //Point Array
+            pointList = new Array ();
+
+            // Create Canvas
+            var r = Raphael(10, 50, 600, 600);            
+
+            // Make a 'group' of points
+            for( i=0; i<20; i++){   
+
+                    //Create Point            
+                    pointList[i] = r.circle(10*i, 10*i,5);
+                    pointList[i].attr({stroke: "none", fill: "#999", opacity: 0});
+
+                    //Fade in   
+                    pointList[i].animate({opacity: 1}, 1000 );  
+
+            }
+
+            // Remove points, starting with the first
+            for( i=0; i<20; i++){           
+
+                    //Try fading them out
+                    //pointList[i].animate({opacity: 0}, 1000 );
+            }
+
+        };
+Move.prototype={
+
+ move:function(s){
+  var oop=this,to=oop[s],p=oop.pos(oop.img);
+  if (to){
+   oop.img.style.visibility='hidden';
+   oop.c.style.visibility='visible';
+   to=oop.pos(to);
+   oop.animate('left',p[0],to[0],new Date(),oop.ms,s+'l');
+   oop.animate('top',p[1],to[1],new Date(),oop.ms,s+'t');
+  }
+ },
+ animate:function(mde,f,t,srt,mS,to){
+  var oop=this,ms=new Date().getTime()-srt,now=(t-f)/mS*ms+f;
+  if (isFinite(now)){
+   oop.c.style[mde]=now+'px';
+  }
+  if (ms<mS){
+   oop[to]=setTimeout(function(){ oop.animate(mde,f,t,srt,mS,to); },10);
+  }
+  else {
+   oop.c.style[mde]=t+'px';
+  }
+ },
+
+ pos:function(obj){
+  var rtn=[0,0];
+  while(obj){
+   rtn[0]+=obj.offsetLeft;
+   rtn[1]+=obj.offsetTop;
+   obj=obj.offsetParent;
+  }
+  return rtn;
+ }
+
+}
+
+M1=new Move({
+ ImageID:'img1',
+ BRAnchorID:'br',
+ TLAnchorID:'tl',
+ Duration:1000
+});
+/*]]>*/
+</script>
+</body>
+
+</html>
